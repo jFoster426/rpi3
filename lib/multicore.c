@@ -7,7 +7,7 @@
 #define CORE3	0x5A0
 
 char initializeCore(unsigned int c, unsigned int(*a)()) {
-	if(c != CORE1 & c != CORE2 && c != CORE3) return 1;
+	if (c != CORE1 & c != CORE2 && c != CORE3) return 1;
 	put32(c, a);
 	return 0;
 }

@@ -1,7 +1,7 @@
 /* RaspberryPi.h                                                                                          *
- * Controls which ARM chip is included in libraries based off compiler                                    *
- * flags. Change this to use different Raspberry Pi's in the Makefile                                     *
- * Just include this file before including any other library to make sure it'll work on your specific Pi. */
+* Controls which ARM chip is included in libraries based off compiler                                    *
+* flags. Change this to use different Raspberry Pi's in the Makefile                                     *
+* Just include this file before including any other library to make sure it'll work on your specific Pi. */
 
 #define PBASE         0x3F000000
 

@@ -49,7 +49,7 @@ into the command line. On Windows, you'll need to go to this website:
 <url>https://launchpad.net/gcc-arm-embedded</url>  
 There you can download your particular version of the software for your computer.
 
-Makefiles are included in these example codes so most people who use them won't need to change anything to compile code. Simply type "make" into the command line (making sure the directory is in the right place), and then all the files such as kernel7.img will show up in the folder you make the project in. Also, the Makefile launches the uploader code on the computer, so everything is done all in one step.
+Makefiles are included in these example codes so most people who use them won't need to change anything to compile code. Simply type <code>make</code> into the command line (making sure the directory is in the right place), and then all the files such as kernel7.img will show up in the folder you make the project in. Also, the Makefile launches the uploader code on the computer, so everything is done all in one step.
 
 These examples use four different files that work in conjunction to make the binary file kernel7.img. These files are:  
 #####main.c  
@@ -69,3 +69,16 @@ These examples use four different files that work in conjunction to make the bin
 I'm currently working on lots of different libraries for bare metal development using the Pi. These will eventually cover everything from turning on an LED all the way up to using the USB ports. You can go into /lib to see what's accomplished so far. Inside each library file there will be instructions on how to use them.
 
 All libraries rely on the file "RaspberryPi.h". Make sure you include it as the first line of your program. It's basically a bunch of #define statements that tell the other libraries where the perhiperal addresses are located in RAM.
+
+#Other Repos, Sites, etc.
+
+It has taken me many months to reach the stage that I'm at today. A lot of information, advice and help has been provided from the Raspberry Pi forums and from other sites. Here is where I'd like to put some of the places that I've found most helpful in creating these examples.
+
+<url>https://github.com/dwelch67/raspberrypi</url>  
+Large chunks of the code here has been taken from dwelch67's Github, particularily the start.s files and most of uart.c. I highly reccomend visiting his repository if you haven't already, there are a lot more examples than there are here (as of right now). The only reason why I re-did his bootloader code was because I couldn't figure out how to use minicom on my computer. I also couldn't find any free programs to use on Windows.
+
+<url>http://www.valvers.com/open-software/raspberry-pi/step01-bare-metal-programming-in-cpt1/</url>  
+This site is great because it explains how to use the GPU as well as many other important aspects of Raspberry Pi bare metal. A great tutorial and it's where I started and got my first "Hello World" program to run!
+
+<url>https://github.com/rsta2/circle64</url>  
+There are a lot of features in here, I will start looking through it and expand the list of libraries that I have. Great place to go after you understand the basics of bare metal, and want to get into some deeper programs.
