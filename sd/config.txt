@@ -1,0 +1,6 @@
+arm_control=0x200
+kernel_old=1
+disable_commandline_tags=1
+force_turbo=1
+arm_freq=1200
+core_freq=250
