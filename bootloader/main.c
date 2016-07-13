@@ -1,7 +1,7 @@
 #define RPI3
 #define CHECKSUM_VAR 0x06
 
-#include "../../lib/RaspberryPi.h"
+#include <RaspberryPi.h>
 
 void __attribute__ ((noinline)) put32(unsigned int a, unsigned int b) {
 	asm volatile("str w1,[x0]");
@@ -87,6 +87,7 @@ void boot_c0() {
 		if (data[4] != checksum || data[5] != '\n')
 		if (val == 0x00 && data[4] == 0xff) {
 			uart_putc('R');
+			for(i = 0; i < 1000000; i++);
 			put32(0x20000000, 0x12345678);
 			BRANCHTO(0x1000);
 			while(1);

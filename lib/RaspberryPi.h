@@ -57,61 +57,6 @@
 #define GPPUDCLK0	(PBASE + 0x00200098)
 #define GPPUDCLK1	(PBASE + 0x0020009C)
 
-#define FSEL0		0
-#define FSEL1		3
-#define FSEL2		6
-#define FSEL3		9
-#define FSEL4		12
-#define FSEL5		15
-#define FSEL6		18
-#define FSEL7		21
-#define FSEL8		24
-#define FSEL9		27
-#define FSEL10		32+0
-#define FSEL11		32+3
-#define FSEL12		32+6
-#define FSEL13		32+9
-#define FSEL14		32+12
-#define FSEL15		32+15
-#define FSEL16		32+18
-#define FSEL17		32+21
-#define FSEL18		32+24
-#define FSEL19		32+27
-#define FSEL20		64+0
-#define FSEL21		64+3
-#define FSEL22		64+6
-#define FSEL23		64+9
-#define FSEL24		64+12
-#define FSEL25		64+15
-#define FSEL26		64+18
-#define FSEL27		64+21
-#define FSEL28		64+24
-#define FSEL29		64+27
-#define FSEL30		96+0
-#define FSEL31		96+3
-#define FSEL32		96+6
-#define FSEL33		96+9
-#define FSEL34		96+12
-#define FSEL35		96+15
-#define FSEL36		96+18
-#define FSEL37		96+21
-#define FSEL38		96+24
-#define FSEL39		96+27
-#define FSEL40		128+0
-#define FSEL41		128+3
-#define FSEL42		128+6
-#define FSEL43		128+9
-#define FSEL44		128+12
-#define FSEL45		128+15
-#define FSEL46		128+18
-#define FSEL47		128+21
-#define FSEL48		128+24
-#define FSEL49		128+27
-#define FSEL50		160+0
-#define FSEL51		160+3
-#define FSEL52		160+6
-#define FSEL53		160+9
-
 #define INPUT		0b000
 #define OUTPUT		0b001
 #define ALT0		0b100
@@ -187,8 +132,10 @@
 #define AUX_SPI0_LTOH   (PBASE + 0x00204010)
 #define AUX_SPI0_DC     (PBASE + 0x00204014)
 
-#define CS0		0
-#define CS1		1
+#define CS0		1
+#define CS1		2
+#define NO_CS	0
+
 
 // ** TIMER Defines ** //
 

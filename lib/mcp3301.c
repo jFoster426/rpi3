@@ -8,6 +8,7 @@ int mcp3301Convert(int val) {
 		val = -val;
 	}
 	val += 4095;
+	return val;
 }
 
 #endif

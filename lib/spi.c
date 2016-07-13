@@ -4,25 +4,27 @@
 #include "memory.c"
 #include "gpio.c"
 
-unsigned int spi_init(unsigned int cdiv) {
+unsigned int spi_init(unsigned int cdiv, unsigned int cspins) {
 	unsigned int spi;
 	spi = get32(AUX_ENABLES);
 	put32(AUX_ENABLES, spi | 2);
-
-	gpio_fsel(GP7, ALT0);
-	gpio_fsel(GP8, ALT0);
+	if(cspins | 1) {
+		gpio_fsel(GP7, ALT0);
+	}
+	if(cspins | 2) {
+		gpio_fsel(GP8, ALT0);
+	}
 	gpio_fsel(GP9, ALT0);
 	gpio_fsel(GP10, ALT0);
 	gpio_fsel(GP11, ALT0);
-
 	put32(AUX_SPI0_CS, 0x0000030);
 	put32(AUX_SPI0_CLK, cdiv);
 
 	return SYS_CLOCK / cdiv;
 }
 
-unsigned char spi_transfer8(unsigned char data) {
-	put32(AUX_SPI0_CS, 0x000000B0);
+unsigned char spi_transfer8(unsigned char data, unsigned char cs) {
+	put32(AUX_SPI0_CS, 0x000000B0 | cs);
 	while (1) {
 		if (get32(AUX_SPI0_CS) & (1 << 18)) {
 			break;

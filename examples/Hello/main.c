@@ -1,5 +1,3 @@
-#define RPI3
-
 #include <RaspberryPi.h>
 #include <multicore.c>
 #include <uart.c>

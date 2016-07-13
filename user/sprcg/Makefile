@@ -1,9 +1,10 @@
-
 ARMGNU ?= aarch64-linux-gnu
 
-COPS = -Wall -Os -nostdlib -nostartfiles -ffreestanding -I "../lib"
+COPS = -Wall -O4 -nostdlib -nostartfiles -ffreestanding -I "../../lib"
 
-all : clean gcc
+mkfile_path := $(abspath $(CURDIR))
+
+all : clean gcc upload
 
 clean :
 	rm -f *.o
@@ -28,3 +29,7 @@ kernel7.img : memmap start.o main.o
 	$(ARMGNU)-objdump -D main.elf > main.list
 	$(ARMGNU)-objcopy main.elf -O ihex main.hex
 	$(ARMGNU)-objcopy main.elf -O binary kernel7.img
+
+upload : kernel7.img
+	cd "../../bootloader/pc"; \
+		./main $(mkfile_path)/kernel7.img

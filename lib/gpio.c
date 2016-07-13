@@ -44,31 +44,22 @@ void gpio_fsel(unsigned char pin, unsigned char mode) {
 }
 
 void gpio_write(unsigned char pin, unsigned char state) {
-	volatile unsigned int gp;
-	if (pin >= 32) {
-		if (state == HIGH) {
-			gp = get32(GPSET1);
-			gp |= 1 << (pin - 32);
-			put32(GPSET1, gp);
-		}
-		else {
-			gp = get32(GPCLR1);
-			gp |= 1 << (pin - 32);
-			put32(GPCLR1, gp);
-		}
-	}
-	else {
-		if (state == HIGH) {
-			gp = get32(GPSET0);
-			gp |= 1 << pin;
-			put32(GPSET0, gp);
-		}
-		else {
-			gp = get32(GPCLR0);
-			gp |= 1 << pin;
-			put32(GPCLR0, gp);
-		}
-	}
+   if (pin >= 32) {
+      if (state == HIGH) {
+         put32(GPSET1, 1 << (pin - 32));
+      }
+      else {
+         put32(GPCLR1, 1 << (pin - 32));
+      }
+   }
+   else {
+      if (state == HIGH) {
+         put32(GPSET0, 1 << pin);
+      }
+      else {
+         put32(GPCLR0, 1 << pin);
+      }
+   }
 }
 
 unsigned char gpio_read(unsigned char pin) {
