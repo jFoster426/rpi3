@@ -1,0 +1,2 @@
+#ignore all files in the user/ directory
+*user/
