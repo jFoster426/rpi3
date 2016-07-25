@@ -30,7 +30,7 @@ time_t start;
 
 int main(int argc, char *argv[]) {
 	for(i = 0; i < 25; i++) {
-		if(RS232_OpenComport(i, 57600, "8N1") == 0) goto init;
+		if(RS232_OpenComport(i, 115200, "8N1") == 0) goto init;
 		RS232_CloseComport(i);
 	}
 	printf("\nError opening Serial port.\n");
@@ -39,17 +39,16 @@ int main(int argc, char *argv[]) {
 	printf("\nOpened Serial port %d (%s) succesfully.\n", i, ports[i]);
 	if(argv[1] != NULL) {
 		FILE *file = fopen(argv[1], "r");
-		fseek(file, 0L, SEEK_END);
-		unsigned long length = ftell(file);
-		printf("\nFile length: %lu bytes.\n", length);
-		fseek(file, 0L, 0); // start reading from beginning
 		if (file == 0) {
-			printf("Could not open file\n\n");
+			printf("Could not open file: %s\n\n", argv[1]);
 			RS232_CloseComport(i);
-			fclose(file);
 			return 0;
 		}
 		else {
+			fseek(file, 0L, SEEK_END);
+			unsigned long length = ftell(file);
+			printf("\nFile length: %lu bytes.\n", length);
+			fseek(file, 0L, 0); // start reading from beginning
 			RS232_SendByte(i, '\n');
 			start = clock();
 			while(inByte[0] != '$') {

@@ -1,4 +1,3 @@
-#define RPI3
 #define CHECKSUM_VAR 0x06
 
 #include <RaspberryPi.h>
@@ -34,14 +33,9 @@ void uart_putc(char c) {
 }
 
 void boot_c0() {
-	put32(0x500, 0x00000000);
-	put32(0x504, 0x00000000);
-	put32(0x508, 0x00000000);
-	put32(0x5A0, 0x00000000);
 	unsigned char data[6], checksum;
-	unsigned int addr = 0x1000, val, i;
+	unsigned int addr = 0x800 /*start at bootstrap user code*/, val, i;
 	// *** uart init *** //
-
 	put32(AUX_ENABLES, 1);
 	put32(AUX_MU_IER_REG, 0);
 	put32(AUX_MU_CNTL_REG, 0);
@@ -49,18 +43,15 @@ void boot_c0() {
 	put32(AUX_MU_MCR_REG, 0);
 	put32(AUX_MU_IER_REG, 0);
 	put32(AUX_MU_IIR_REG, 0xC6);
-	put32(AUX_MU_BAUD_REG, 542); // 541.53
-
+	put32(AUX_MU_BAUD_REG, 542); // 270.26 FOR 115200, 541.53 FOR 57600
 	i = get32(GPFSEL1);
 	i &= ~(0b111 << 12);
 	i |= (ALT5 << 12);
 	put32(GPFSEL1, i);
-
 	i = get32(GPFSEL1);
 	i &= ~(0b111 << 15);
 	i |= (ALT5 << 15);
 	put32(GPFSEL1, i);
-
 	put32(GPPUD, 0);
 	for (i = 0; i < 150; i++)
 	asm volatile("Nop");
@@ -69,7 +60,6 @@ void boot_c0() {
 	asm volatile("Nop");
 	put32(GPPUDCLK0, 0);
 	put32(AUX_MU_CNTL_REG, 3);
-
 	// ***************** //
 	while (1) {
 		while (!uart_check());
@@ -87,9 +77,8 @@ void boot_c0() {
 		if (data[4] != checksum || data[5] != '\n')
 		if (val == 0x00 && data[4] == 0xff) {
 			uart_putc('R');
-			for(i = 0; i < 1000000; i++);
-			put32(0x20000000, 0x12345678);
-			BRANCHTO(0x1000);
+			uart_putc('\n');
+			BRANCHTO(0x1000); // branch to main code, not IRQ code
 			while(1);
 		}
 		else
@@ -103,37 +92,22 @@ void boot_c0() {
 }
 
 void boot_c1() {
-	unsigned int n;
-	for(n = 0; n < 500000; n++) asm volatile("Nop");
-	while (1) {
-		n = get32(0x504);
-		if (n != 0) {
-			BRANCHTO(n);
-			while(1);
-		}
+	while(1) {
+		unsigned int x = get32(0x504);
+		if(x != 0) BRANCHTO(x);
 	}
 }
 
 void boot_c2() {
-	unsigned int n;
-	for(n = 0; n < 500000; n++) asm volatile("Nop");
-	while (1) {
-		n = get32(0x508);
-		if (n != 0) {
-			BRANCHTO(n);
-			while(1);
-		}
+	while(1) {
+		unsigned int x = get32(0x508);
+		if(x != 0) BRANCHTO(x);
 	}
 }
 
 void boot_c3() {
-	unsigned int n;
-	for(n = 0; n < 500000; n++) asm volatile("Nop");
-	while (1) {
-		n = get32(0x5A0);
-		if (n != 0) {
-			BRANCHTO(n);
-			while(1);
-		}
+	while(1) {
+		unsigned int x = get32(0x50C);
+		if(x != 0) BRANCHTO(x);
 	}
 }

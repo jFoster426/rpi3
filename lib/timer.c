@@ -1,6 +1,8 @@
 #ifndef timer_c
 #define timer_c
 
+// Timer "ARM Side"
+
 #include "memory.c"
 
 unsigned int FRC_timer_init(unsigned int FRC_prediv) {
@@ -14,6 +16,10 @@ unsigned int FRC_timer_init(unsigned int FRC_prediv) {
 
 unsigned int FRC_timer_get() {
 	return get32(T_CNT);
+}
+
+void FRC_timer_rst() {
+	put32(T_CNT, 0xFFFFFFFF); // timer counts down
 }
 
 #endif

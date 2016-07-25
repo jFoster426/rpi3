@@ -23,8 +23,11 @@ start.o : start.s
 main.o : main.c
 	$(ARMGNU)-gcc $(COPS) -c main.c -o main.o
 
-kernel7.img : memmap start.o main.o
-	$(ARMGNU)-ld start.o main.o -T memmap -o main.elf
+vectors.o : vectors.s
+	$(ARMGNU)-as vectors.s -o vectors.o
+
+kernel7.img : memmap start.o vectors.o main.o
+	$(ARMGNU)-ld start.o main.o vectors.o -T memmap -o main.elf
 	$(ARMGNU)-objdump -D main.elf > main.list
 	$(ARMGNU)-objcopy main.elf -O ihex main.hex
 	$(ARMGNU)-objcopy main.elf -O binary kernel7.img

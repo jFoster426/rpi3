@@ -1,5 +1,15 @@
+.org 0x00
 .globl _start
 _start:
+	b reset
+	b undefined_handler
+	b swi_handler
+	b prefetch_handler
+	b data_handler
+	b unused_handler
+	b irq_handler
+	b fiq_handler
+reset:
 	mrs x0,mpidr_el1
 	mov x1,#0xFF000000
 	bic x0,x0,x1
@@ -10,6 +20,7 @@ _start:
 	cbz x1,core_2
 	sub x1,x0,#3
 	cbz x1,core_3
+.globl hang
 hang:
 	b hang
 core_0:
@@ -22,6 +33,7 @@ core_1:
 	mrs x0,mpidr_el1
 	mov x1,#0x10000
 	str w0,[x1]
+	mov x0,#0x504
 	mov x0,#0x3F000000
 	sub x0,x0,#0x1000
 	mov sp,x0
