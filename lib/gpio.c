@@ -4,6 +4,19 @@
 #include "memory.c"
 
 void gpio_fsel(unsigned char pin, unsigned char mode) {
+	volatile unsigned int gp, p, q;
+	p = pin / 10;
+	gp = get32(GPFSEL0 + (p * 4));
+	q = p * 10;
+	q = pin - q;
+	gp &= ~(0b111 << (pin * 3));
+	gp |= mode << (pin * 3);
+	put32(GPFSEL0 + (p * 4), gp);
+}
+
+/*
+
+void gpio_fsel(unsigned char pin, unsigned char mode) {
 	volatile unsigned int gp;
 	if (pin >= 50) {
 		gp = get32(GPFSEL5);
@@ -42,6 +55,8 @@ void gpio_fsel(unsigned char pin, unsigned char mode) {
 		put32(GPFSEL0, gp);
 	}
 }
+
+*/
 
 void gpio_write(unsigned char pin, unsigned char state) {
    if (pin >= 32) {
@@ -83,6 +98,25 @@ unsigned char gpio_read(unsigned char pin) {
 		else {
 			return LOW;
 		}
+	}
+}
+
+void gpio_pullx(unsigned char pin, unsigned char state) {
+	int i;
+	put32(GPPUD, state);
+	if(pin >= 32) {
+		for(i = 0; i < 150; i++) asm volatile("Nop");
+		put32(GPPUDCLK1, 1 << (pin - 32));
+		for(i = 0; i < 150; i++) asm volatile("Nop");
+		put32(GPPUD, 0);
+		put32(GPPUDCLK1, 0);
+	}
+	else {
+		for(i = 0; i < 150; i++) asm volatile("Nop");
+		put32(GPPUDCLK0, 1 << pin);
+		for(i = 0; i < 150; i++) asm volatile("Nop");
+		put32(GPPUD, 0);
+		put32(GPPUDCLK0, 0);
 	}
 }
 
