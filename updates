@@ -1,1 +1,3 @@
 July 24/2016 - Added support for IRQ, FIQ and other data handlers in the bootloader code. This makes it possible to upload programs that use the interrupts on the ARM processor while still being able to use the handy bootloader feature to upload code fast.
+
+August 2/2016 - Added support for videocore communication through mailboxes, adding tags, as well as setting up the framebuffer and printing text to the screen.
