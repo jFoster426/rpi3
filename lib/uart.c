@@ -22,16 +22,16 @@ unsigned char uart_check(void) {
 	return (0);
 }
 
-void uart_putc(char c) {
+void uart_putc(unsigned char c) {
 	while (1) {
 		if (get32(AUX_MU_LSR_REG) & 0x20) {
 			break;
 		}
 	}
-	put32(AUX_MU_IO_REG, c);
+	put32(AUX_MU_IO_REG, c & 0xff);
 }
 
-void uart_puts(char *s) {
+void uart_puts(unsigned char *s) {
 	while (*s != '\0') {
 		uart_putc(*s++);
 	}
@@ -46,9 +46,7 @@ void uart_flush(void) {
 }
 
 void uart_puthex(unsigned int d) {
-	unsigned int rb;
-	unsigned int rc;
-	rb = 32;
+	unsigned int rb = 32, rc;
 	while (1) {
 		rb -= 4;
 		rc = (d >> rb) & 0xF;
@@ -59,6 +57,15 @@ void uart_puthex(unsigned int d) {
 		uart_putc(rc);
 		if (rb == 0)
 		break;
+	}
+}
+
+void uart_putbin(unsigned int d) {
+	signed int i;
+	unsigned char b;
+	for(i = 31; i >= 0; i--) {
+		b = ((d >> i) & 1) + 48;
+		uart_putc(b);
 	}
 }
 
@@ -74,8 +81,8 @@ void uart_init(unsigned int baud) {
 	put32(AUX_MU_IIR_REG, 0xC6);
 	put32(AUX_MU_BAUD_REG, baud);
 
-	gpio_fsel(GP14, ALT5);
-	gpio_fsel(GP15, ALT5);
+	gpio_fsel(14, ALT5);
+	gpio_fsel(15, ALT5);
 
 	put32(GPPUD, 0);
 	for (ra = 0; ra < 150; ra++) {

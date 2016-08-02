@@ -4,19 +4,6 @@
 #include "memory.c"
 
 void gpio_fsel(unsigned char pin, unsigned char mode) {
-	volatile unsigned int gp, p, q;
-	p = pin / 10;
-	gp = get32(GPFSEL0 + (p * 4));
-	q = p * 10;
-	q = pin - q;
-	gp &= ~(0b111 << (pin * 3));
-	gp |= mode << (pin * 3);
-	put32(GPFSEL0 + (p * 4), gp);
-}
-
-/*
-
-void gpio_fsel(unsigned char pin, unsigned char mode) {
 	volatile unsigned int gp;
 	if (pin >= 50) {
 		gp = get32(GPFSEL5);
@@ -55,8 +42,6 @@ void gpio_fsel(unsigned char pin, unsigned char mode) {
 		put32(GPFSEL0, gp);
 	}
 }
-
-*/
 
 void gpio_write(unsigned char pin, unsigned char state) {
    if (pin >= 32) {

@@ -1,7 +1,7 @@
 
 ARMGNU ?= aarch64-linux-gnu
 
-COPS = -Wall -O4 -nostdlib -nostartfiles -ffreestanding -I "../../lib"
+COPS = -O4 -nostdlib -nostartfiles -ffreestanding -I "../../lib"
 
 mkfile_path := $(abspath $(CURDIR))
 
