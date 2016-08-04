@@ -43,7 +43,7 @@ void gpio_fsel(unsigned char pin, unsigned char mode) {
 	}
 }
 
-void gpio_write(unsigned char pin, unsigned char state) {
+void gpio_write(unsigned char pin, unsigned int state) {
    if (pin >= 32) {
       if (state == HIGH) {
          put32(GPSET1, 1 << (pin - 32));
@@ -62,7 +62,7 @@ void gpio_write(unsigned char pin, unsigned char state) {
    }
 }
 
-unsigned char gpio_read(unsigned char pin) {
+unsigned int gpio_read(unsigned char pin) {
 	volatile unsigned int gp;
 	if (pin >= 32) {
 		gp = get32(GPLEV1);

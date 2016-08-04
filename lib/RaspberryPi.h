@@ -7,7 +7,7 @@
 
 #define PBASE					0x3F000000
 
-#define SYS_CLOCK				250000000  // 250 MHz core_freq, note this is different from the arm_freq in comfig.txt
+#define SYS_CLOCK				400000000  // 250 MHz core_freq, note this is different from the arm_freq in comfig.txt
 
 // ** General Defines ** //
 

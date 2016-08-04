@@ -43,7 +43,7 @@ void boot_c0() {
 	put32(AUX_MU_MCR_REG, 0);
 	put32(AUX_MU_IER_REG, 0);
 	put32(AUX_MU_IIR_REG, 0xC6);
-	put32(AUX_MU_BAUD_REG, 542); // 270.26 FOR 115200, 541.53 FOR 57600
+	put32(AUX_MU_BAUD_REG, 433); // 115200 baud
 	i = get32(GPFSEL1);
 	i &= ~(0b111 << 12);
 	i |= (ALT5 << 12);

@@ -147,7 +147,7 @@ Disassembly of section .text:
  1c4:	528018c1 	mov	w1, #0xc6                  	// #198
  1c8:	97ffffbe 	bl	c0 <put32>
  1cc:	528a0d00 	mov	w0, #0x5068                	// #20584
- 1d0:	528043c1 	mov	w1, #0x21e                 	// #542
+ 1d0:	52803621 	mov	w1, #0x1b1                 	// #433
  1d4:	72a7e420 	movk	w0, #0x3f21, lsl #16
  1d8:	97ffffba 	bl	c0 <put32>
  1dc:	52800080 	mov	w0, #0x4                   	// #4
@@ -318,4 +318,3 @@ Disassembly of section .comment:
   28:	2029312e 	.inst	0x2029312e ; undefined
   2c:	2e382e34 	uqsub	v20.8b, v17.8b, v24.8b
   30:	Address 0x0000000000000030 is out of bounds.
-
