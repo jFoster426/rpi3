@@ -8,7 +8,7 @@
 #define CORE2	0x508
 #define CORE3	0x50C
 
-char initializeCore(unsigned int c, unsigned int(*a)()) {
+char core_init(unsigned int c, unsigned int(*a)()) {
 	if (c != CORE1 && c != CORE2 && c != CORE3) return 1;
 	put32(c, a);
 	return 0;

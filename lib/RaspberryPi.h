@@ -168,4 +168,16 @@
 #define TAG_CURSOR_INFO			0x8011
 #define TAG_CURSOR_STATE		0x8010
 
+// ** PCM / I2S Defines ** //
+
+#define PCM_CS					(PBASE + 0x00203000)
+#define PCM_FIFO				(PBASE + 0x00203004)
+#define PCM_MODE				(PBASE + 0x00203008)
+#define PCM_RXC					(PBASE + 0x0020300C)
+#define PCM_TXC					(PBASE + 0x00203010)
+#define PCM_DREQ				(PBASE + 0x00203014)
+#define PCM_INTEN				(PBASE + 0x00203018)
+#define PCM_INTSTC				(PBASE + 0x0020301C)
+#define PCM_GRAY				(PBASE + 0x00203020)
+
 #endif
