@@ -4,30 +4,18 @@
 #include "memory.c"
 #include "gpio.c"
 
-unsigned int uart_lcr(void) {
-	return (get32(AUX_MU_LSR_REG));
-}
-
-unsigned char uart_recv(void) {
-	while (1) {
-		if (get32(AUX_MU_LSR_REG) & 0x01) {
-			break;
-		}
-	}
-	return (get32(AUX_MU_IO_REG) & 0xFF);
+unsigned char uart_read(void) {
+	while (get32(AUX_MU_LSR_REG) & 1 == 0);
+	return (get32(AUX_MU_IO_REG) & 0xff);
 }
 
 unsigned char uart_check(void) {
-	if (get32(AUX_MU_LSR_REG) & 0x01) return (1);
-	return (0);
+	if (get32(AUX_MU_LSR_REG) & 0x01) return 1;
+	return 0;
 }
 
 void uart_putc(unsigned char c) {
-	while (1) {
-		if (get32(AUX_MU_LSR_REG) & 0x20) {
-			break;
-		}
-	}
+	while (get32(AUX_MU_LSR_REG) & 0x20 == 0);
 	put32(AUX_MU_IO_REG, c & 0xff);
 }
 
@@ -38,18 +26,14 @@ void uart_puts(unsigned char *s) {
 }
 
 void uart_flush(void) {
-	while (1) {
-		if ((get32(AUX_MU_LSR_REG) & 0x100) == 0) {
-			break;
-		}
-	}
+	while (get32(AUX_MU_LSR_REG) & 0x100);
 }
 
 void uart_puthex(unsigned int d) {
 	unsigned int rb = 32, rc;
 	while (1) {
 		rb -= 4;
-		rc = (d >> rb) & 0xF;
+		rc = (d >> rb) & 0xf;
 		if (rc > 9)
 		rc += 0x37;
 		else
@@ -63,36 +47,50 @@ void uart_puthex(unsigned int d) {
 void uart_putbin(unsigned int d) {
 	signed int i;
 	unsigned char b;
-	for(i = 31; i >= 0; i--) {
+	for (i = 31; i >= 0; i--) {
 		b = ((d >> i) & 1) + 48;
 		uart_putc(b);
 	}
 }
 
+void uart_putdec(unsigned int val) {
+	unsigned int tmp, val2 = val;
+	signed char ts = 0, i = 0;
+	tmp = val2;
+	while(tmp > 10) {
+		tmp /= 10;
+		ts++;
+	}
+	while(ts >= 0) {
+		tmp = val2;
+		while(i < ts) {
+			tmp /= 10;
+			i++;
+		}
+		uart_putc(tmp + 48);
+		while(i > 0) {
+			tmp *= 10;
+			i--;
+		}
+		val2 = val2 - tmp;
+		ts--;
+	}
+}
+
 void uart_init(unsigned int baud) {
 	baud = ((SYS_CLOCK / baud) / 8) - 1;
-	unsigned int ra;
 	put32(AUX_ENABLES, 1);
 	put32(AUX_MU_IER_REG, 0);
 	put32(AUX_MU_CNTL_REG, 0);
 	put32(AUX_MU_LCR_REG, 3);
 	put32(AUX_MU_MCR_REG, 0);
 	put32(AUX_MU_IER_REG, 0);
-	put32(AUX_MU_IIR_REG, 0xC6);
+	put32(AUX_MU_IIR_REG, 0xc6);
 	put32(AUX_MU_BAUD_REG, baud);
-
 	gpio_fsel(14, ALT5);
 	gpio_fsel(15, ALT5);
-
-	put32(GPPUD, 0);
-	for (ra = 0; ra < 150; ra++) {
-		asm volatile("Nop");
-	}
-	put32(GPPUDCLK0, (1 << 14) | (1 << 15));
-	for (ra = 0; ra < 150; ra++) {
-		asm volatile("Nop");
-	}
-	put32(GPPUDCLK0, 0);
+	gpio_pullx(14, P_OFF);
+	gpio_pullx(15, P_OFF);
 	put32(AUX_MU_CNTL_REG, 3);
 }
 

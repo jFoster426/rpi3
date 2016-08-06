@@ -21,7 +21,7 @@ int c1_main(void) {
 
 int c0_main(void) {
 	uart_init(115200);
-	while(uart_recv() != 'V');
+	while(uart_read() != 'V');
 	uart_puts("Hello from Core 0!\n");
 	core_init(CORE1, &c1_main);
 	while(1);
