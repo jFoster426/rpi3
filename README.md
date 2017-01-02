@@ -44,7 +44,7 @@ Using the bootloader to upload programs to your Pi is much faster than going sta
 After a while, running someone else's code gets quite boring and most people want to make their own things, or at least edit some pre-made stuff so it works better for their intentions. In this section I'll explain how to download the compiler toolchain and everything you'll need to make your own code.
 
 For the Raspberry Pi 3, you will need to download the aarch64 toolchain to compile C code. Procedure for install is slightly different depending on whether you're running Linux or Windows. For Linux, simply type:  
-<code>sudo apt get install aarch64-linux-gnu-gcc</code>  
+<code>sudo apt get install gcc-aarch64-linux-gnu</code>  
 into the command line. On Windows, you'll need to go to this website:  
 <url>https://launchpad.net/gcc-arm-embedded</url>  
 There you can download your particular version of the software for your computer.
